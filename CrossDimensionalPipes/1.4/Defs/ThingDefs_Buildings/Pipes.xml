@@ -17,7 +17,7 @@
         <altitudeLayer>BuildingOnTop</altitudeLayer>
     </ThingDef>
 
-	<ThingDef ParentName="TeleporterBase">
+	<ThingDef ParentName="TeleporterBase" MayRequire="vanillaexpanded.vchemfuele">
 		<defName>TeleporterInput</defName>
         <label>Input Teleporter</label>
         <description>Inputs into the Teleporter</description>
@@ -41,9 +41,12 @@
                 <thing>Chemfuel</thing>
             </li>
         </comps>
+		<researchPrerequisites>
+			<li>BiofuelRefining</li>
+		</researchPrerequisites>
 	</ThingDef>
 
-	<ThingDef ParentName="TeleporterBase">
+	<ThingDef ParentName="TeleporterBase" MayRequire="vanillaexpanded.vchemfuele">
 		<defName>TeleporterOutput</defName>
         <label>Output Teleporter</label>
         <description>Outputs from a Teleporter</description>
@@ -67,5 +70,64 @@
                 <thing>Chemfuel</thing>
             </li>
         </comps>
+		<researchPrerequisites>
+			<li>BiofuelRefining</li>
+		</researchPrerequisites>
+	</ThingDef>
+
+	<ThingDef ParentName="TeleporterBase" MayRequire="vanillaexpanded.vnutriente">
+		<defName>NutrientTeleporterOutput</defName>
+		<label>Nutrient Teleporter Output</label>
+		<description>Outputs from a Teleporter</description>
+		<graphicData>
+			<texPath>Things/Building/Production/ChemfuelTap</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<damageData>
+				<cornerTL>Damage/Corner</cornerTL>
+				<cornerTR>Damage/Corner</cornerTR>
+				<cornerBL>Damage/Corner</cornerBL>
+				<cornerBR>Damage/Corner</cornerBR>
+			</damageData>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
+		<comps>
+			<li Class="CompProperties_Flickable" />
+			<li
+                Class="CrossDimensionalPipes.CompProperties_TeleporterValveOutput">
+				<pipeNet>VNPE_NutrientPasteNet</pipeNet>
+			</li>
+		</comps>
+		<researchPrerequisites>
+			<li>BiofuelRefining</li>
+		</researchPrerequisites>
+	</ThingDef>
+
+	<ThingDef ParentName="TeleporterBase" MayRequire="vanillaexpanded.vnutriente">
+		<defName>NutrientTeleporterInputt</defName>
+		<label>Nutrient Teleporter Input</label>
+		<description>Outputs from a Teleporter</description>
+		<graphicData>
+			<texPath>Things/Building/Production/ChemfuelDrain</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<damageData>
+				<cornerTL>Damage/Corner</cornerTL>
+				<cornerTR>Damage/Corner</cornerTR>
+				<cornerBL>Damage/Corner</cornerBL>
+				<cornerBR>Damage/Corner</cornerBR>
+			</damageData>
+			<drawRotated>false</drawRotated>
+			<allowFlip>false</allowFlip>
+		</graphicData>
+		<comps>
+			<li Class="CompProperties_Flickable" />
+			<li
+                Class="CrossDimensionalPipes.CompProperties_TeleporterValveInput">
+				<pipeNet>VNPE_NutrientPasteNet</pipeNet>
+			</li>
+		</comps>
+		<researchPrerequisites>
+			<li>BiofuelRefining</li>
+		</researchPrerequisites>
 	</ThingDef>
 </Defs>

@@ -86,10 +86,14 @@ namespace CrossDimensionalPipes
 
             foreach (TeleporterValveOutput output in WorldComponent_TeleporterOut.Instance.TeleOut)
             {
+                if (output.Resource == this.Resource)
+                {
+
                 list.Add(new FloatMenuOption("Select " + output.Name, () =>
                 {
                     teleOut = output;
                 }));
+                }
             }
             if (list.Any<FloatMenuOption>())
             {
