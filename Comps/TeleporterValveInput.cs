@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PipeSystem;
 using RimWorld;
 using Verse;
+using UnityEngine;
 
 namespace CrossDimensionalPipes
 {
@@ -15,7 +16,7 @@ namespace CrossDimensionalPipes
         private CompBreakdownable compBreakdownable;
         private CompPowerTrader compPowerTrader;
         private CompFlickable compFlickable;
-        public float amountToRemove;
+        public float amountToRemove=50;
 
         public TeleporterValveOutput teleOut;
         private Command_Action selectOutput;
@@ -31,7 +32,7 @@ namespace CrossDimensionalPipes
             {
                 action = delegate
                 {
-                    
+                    process_Outputs();
                 },
                 defaultLabel = "Select Output",
                 defaultDesc = "Select the Output"
@@ -50,19 +51,23 @@ namespace CrossDimensionalPipes
         public override void CompTick()
         {
             base.CompTick();
-            if (parent.IsHashIntervalTick(250))
+            if (parent.IsHashIntervalTick(300))
                 CompTickRare();
         }
-        
+
 
 
         public override void CompTickRare()
         {
             base.CompTickRare();
-            if (CanInputNow && amountToRemove > 0 && teleOut.MaxCanInput > amountToRemove)
+            if (teleOut != null)
+            {
+
+            if (CanInputNow && amountToRemove > 0 && teleOut.MaxCanInput > amountToRemove && amountToRemove < PipeNet.CurrentStored() &&teleOut.CanOutputNow)
             {
                 teleOut.Input(amountToRemove);
-                PipeNet.DrawAmongStorage(amountToRemove,PipeNet.storages);
+                PipeNet.DrawAmongStorage(amountToRemove, PipeNet.storages);
+            }
             }
         }
 
@@ -75,16 +80,21 @@ namespace CrossDimensionalPipes
             yield return selectOutput;
         }
 
-        public override IEnumerable<FloatMenuOption> CompFloatMenuOptions(Pawn selPawn)
+        public void process_Outputs()
         {
-            foreach (FloatMenuOption option in base.CompFloatMenuOptions(selPawn)) yield return option;
-
+            List<FloatMenuOption> list = new List<FloatMenuOption>();
 
             foreach (TeleporterValveOutput output in WorldComponent_TeleporterOut.Instance.TeleOut)
-                yield return new FloatMenuOption("Select "+output.Name, () =>
-                  {
-                      teleOut = output;
-                  });
+            {
+                list.Add(new FloatMenuOption("Select " + output.Name, () =>
+                {
+                    teleOut = output;
+                }));
+            }
+            if (list.Any<FloatMenuOption>())
+            {
+                Find.WindowStack.Add(new FloatMenu(list));
             }
         }
+    }
 }
