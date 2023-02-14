@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingDef Name="TeleporterBase" ParentName="BuildingBase" Abstract="true">
+        <costList>
+            <Steel>15</Steel>
+        </costList>
+        <tickerType>Normal</tickerType>
+        <thingClass>Building</thingClass>
+        <category>Building</category>
+        <rotatable>false</rotatable>
+        <neverMultiSelect>true</neverMultiSelect>
+        <designationCategory>VCHE_PipeNetworks</designationCategory>
+        <surfaceType>Item</surfaceType>
+        <constructEffect>ConstructMetal</constructEffect>
+        <researchPrerequisites>
+        </researchPrerequisites>
+        <altitudeLayer>BuildingOnTop</altitudeLayer>
+    </ThingDef>
+
+	<ThingDef ParentName="TeleporterBase">
+		<defName>TeleporterInput</defName>
+        <label>Input Teleporter</label>
+        <description>Inputs into the Teleporter</description>
+        <graphicData>
+            <texPath>Things/Building/Production/ChemfuelDrain</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+            <drawRotated>false</drawRotated>
+            <allowFlip>false</allowFlip>
+        </graphicData>
+        <comps>
+            <li Class="CompProperties_Flickable" />
+            <li
+                Class="CrossDimensionalPipes.CompProperties_TeleporterValveInput">
+                <pipeNet>VCHE_ChemfuelNet</pipeNet>
+                <thing>Chemfuel</thing>
+            </li>
+        </comps>
+	</ThingDef>
+
+	<ThingDef ParentName="TeleporterBase">
+		<defName>TeleporterOutput</defName>
+        <label>Output Teleporter</label>
+        <description>Outputs from a Teleporter</description>
+        <graphicData>
+            <texPath>Things/Building/Production/ChemfuelTap</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+            <drawRotated>false</drawRotated>
+            <allowFlip>false</allowFlip>
+        </graphicData>
+        <comps>
+            <li Class="CompProperties_Flickable" />
+            <li
+                Class="CrossDimensionalPipes.CompProperties_TeleporterValveOutput">
+                <pipeNet>VCHE_ChemfuelNet</pipeNet>
+                <thing>Chemfuel</thing>
+            </li>
+        </comps>
+	</ThingDef>
+</Defs>
