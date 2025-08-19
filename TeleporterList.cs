@@ -29,12 +29,6 @@ namespace CrossDimensionalPipes
                 return this.teleIn;
             }
         }
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Collections.Look(ref this.teleIn, "teleporterIn", LookMode.Reference);
-        }
     }
 
     public class WorldComponent_TeleporterOut : WorldComponent
@@ -51,12 +45,6 @@ namespace CrossDimensionalPipes
             {
                 return this.teleOut;
             }
-        }
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_Collections.Look(ref this.teleOut, "teleporterOut", LookMode.Reference);
         }
     }
 }

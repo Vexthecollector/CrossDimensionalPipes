@@ -9,14 +9,17 @@ using Verse;
 
 namespace CrossDimensionalPipes
 {
-    public class TeleporterValveOutput : CompResource
+    public class TeleporterValveOutput : CompResource, IRenameable
     {
-        public string Name { get; set; }
+        public string Name;
         private CompBreakdownable compBreakdownable;
         private CompPowerTrader compPowerTrader;
         private CompFlickable compFlickable;
         private Command_Action setName;
-
+        public string label;
+        public string RenamableLabel { get => label ?? BaseLabel; set => label = value; }
+        public string BaseLabel => parent.LabelCap;
+        public string InspectLabel => RenamableLabel;
         public int MaxCanInput => (int)PipeNet.AvailableCapacity;
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -25,16 +28,16 @@ namespace CrossDimensionalPipes
             compBreakdownable = parent.GetComp<CompBreakdownable>();
             compPowerTrader = parent.GetComp<CompPowerTrader>();
             compFlickable = parent.GetComp<CompFlickable>();
-            if (respawningAfterLoad) return;
-            Find.WindowStack.Add(new Dialog_RenameOutput(this));
-            WorldComponent_TeleporterOut.Instance.TeleOut.Add(this);
-
+            WorldComponent_TeleporterOut.Instance.TeleOut.AddDistinct(this);
             setName= new Command_Action
             {
                 action = () => Find.WindowStack.Add(new Dialog_RenameOutput(this)),
                 defaultLabel = "Rename Output",
                 defaultDesc = "Rename the Output"
             };
+            if (respawningAfterLoad) return;
+            Find.WindowStack.Add(new Dialog_RenameOutput(this));
+
 
         }
 
@@ -48,9 +51,9 @@ namespace CrossDimensionalPipes
             }
         }
 
-        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        public override void PostDeSpawn( Map previousMap)
         {
-            base.PostDestroy(mode, previousMap);
+            base.PostDeSpawn(previousMap);
             WorldComponent_TeleporterOut.Instance.TeleOut.Remove(this);
         }
 
@@ -58,7 +61,7 @@ namespace CrossDimensionalPipes
         {
             if (CanOutputNow && amountToAdd > 0)
             {
-                PipeNet.DistributeAmongStorage(amountToAdd);
+                PipeNet.DistributeAmongStorage(amountToAdd, out _);
             }
         }
 
@@ -71,24 +74,20 @@ namespace CrossDimensionalPipes
             yield return setName;
         }
 
-
-
-
-    }
-    public class Dialog_RenameOutput : Dialog_Rename
-    {
-        public TeleporterValveOutput Output;
-
-        public Dialog_RenameOutput(TeleporterValveOutput output)
+        public override void PostExposeData()
         {
-            this.Output = output;
-            this.curName = output.Name ?? "Teleporter Output" + " #" + Rand.Range(1, 99).ToString("D2");
+            base.PostExposeData();
+            Scribe_Values.Look(ref label, "Name");
         }
 
-
-        protected override void SetName(string name)
+    }
+    public class Dialog_RenameOutput : Dialog_Rename<TeleporterValveOutput>
+    {
+        public TeleporterValveOutput Output;
+        public Dialog_RenameOutput(TeleporterValveOutput output): base(output)
         {
-            this.Output.Name = name;
+            this.Output = output;
+            this.curName = output.label ?? "Teleporter Output" + " #" + Rand.Range(1, 99).ToString("D2");
         }
     }
 }

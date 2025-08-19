@@ -10,12 +10,15 @@ using UnityEngine;
 
 namespace CrossDimensionalPipes
 {
+    [StaticConstructorOnStartup]
     public class TeleporterValveInput : CompResource
     {
+        private static readonly Texture2D teleporterIcon = ContentFinder<Texture2D>.Get("teleporter");
         public string Name { get; set; }
         private CompBreakdownable compBreakdownable;
         private CompPowerTrader compPowerTrader;
         private CompFlickable compFlickable;
+        public ThingWithComps teleOutThing;
         public float amountToRemove=50;
 
         public TeleporterValveOutput teleOut;
@@ -27,7 +30,7 @@ namespace CrossDimensionalPipes
             compBreakdownable = parent.GetComp<CompBreakdownable>();
             compPowerTrader = parent.GetComp<CompPowerTrader>();
             compFlickable = parent.GetComp<CompFlickable>();
-
+            if(teleOutThing!=null)teleOut=teleOutThing.GetComp<TeleporterValveOutput>();
             selectOutput = new Command_Action
             {
                 action = delegate
@@ -35,7 +38,8 @@ namespace CrossDimensionalPipes
                     process_Outputs();
                 },
                 defaultLabel = "Select Output",
-                defaultDesc = "Select the Output"
+                defaultDesc = "Select the Output",
+                icon = teleporterIcon
             };
         }
 
@@ -89,9 +93,10 @@ namespace CrossDimensionalPipes
                 if (output.Resource == this.Resource)
                 {
 
-                list.Add(new FloatMenuOption("Select " + output.Name, () =>
+                list.Add(new FloatMenuOption("Select " + output.InspectLabel, () =>
                 {
                     teleOut = output;
+                    teleOutThing = teleOut.parent;
                 }));
                 }
             }
@@ -99,6 +104,12 @@ namespace CrossDimensionalPipes
             {
                 Find.WindowStack.Add(new FloatMenu(list));
             }
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_References.Look(ref teleOutThing, "teleporterOut");
         }
     }
 }

@@ -2,7 +2,9 @@
 <Defs>
 	<ThingDef Name="TeleporterBase" ParentName="BuildingBase" Abstract="true">
         <costList>
-            <Steel>15</Steel>
+			<Plasteel>30</Plasteel>
+			<ComponentSpacer>1</ComponentSpacer>
+			<ComponentIndustrial>5</ComponentIndustrial>
         </costList>
         <tickerType>Normal</tickerType>
         <thingClass>Building</thingClass>
@@ -80,7 +82,7 @@
 		<label>Nutrient Teleporter Output</label>
 		<description>Outputs from a Teleporter</description>
 		<graphicData>
-			<texPath>Things/Building/Production/ChemfuelTap</texPath>
+			<texPath>Things/Building/NutrientPasteFeeder/NutrientPasteFeeder</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 			<damageData>
 				<cornerTL>Damage/Corner</cornerTL>
@@ -108,7 +110,7 @@
 		<label>Nutrient Teleporter Input</label>
 		<description>Outputs from a Teleporter</description>
 		<graphicData>
-			<texPath>Things/Building/Production/ChemfuelDrain</texPath>
+			<texPath>Things/Building/NutrientPasteFeeder/NutrientPasteFeeder</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
 			<damageData>
 				<cornerTL>Damage/Corner</cornerTL>
